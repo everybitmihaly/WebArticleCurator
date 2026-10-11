@@ -102,6 +102,9 @@ def extract_next_page_url_mosthallottam(archive_page_raw_html):
     ret = None
     soup = BeautifulSoup(archive_page_raw_html, 'lxml')
     next_page = soup.find('a', class_='nextpostslink')
+    if next_page is None:
+        # Current design of mosthallottam.hu (2026): <a class="next page-numbers" href="https://mosthallottam.hu/page/2/?s">
+        next_page = soup.find('a', class_='next page-numbers')
     if next_page is not None and 'href' in next_page.attrs:
         ret = next_page['href']
     return ret
@@ -382,6 +385,21 @@ def extract_article_urls_from_page_magyaridok(archive_page_raw_html):
     soup = BeautifulSoup(archive_page_raw_html, 'lxml')
     main_container = soup.find_all('h2')
     urls = {link for link in safe_extract_hrefs_from_a_tags(main_container)}
+    return urls
+
+
+def extract_article_urls_from_page_mosthallottam(archive_page_raw_html):
+    """
+        extracts and returns as a list the URLs belonging to articles from an HTML code
+    :param archive_page_raw_html: archive page containing list of articles with their URLs
+    :return: list that contains URLs
+    """
+    soup = BeautifulSoup(archive_page_raw_html, 'lxml')
+    # Current design (2026): <article class="glass-card ..."> ... <h3><a href="https://mosthallottam.hu/COLUMN/SLUG/">
+    urls = {a_tag['href'] for a_tag in soup.select('article h3 a[href]')}
+    if len(urls) == 0:
+        # Old design (for archive pages cached before the redesign)
+        urls = extract_article_urls_from_page_magyaridok(archive_page_raw_html)
     return urls
 
 
