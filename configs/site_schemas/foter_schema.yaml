@@ -1,45 +1,20 @@
 "site_name": "foter"
 
 "columns":
-    "hirek":
-        "archive_url_format": "https://foter.ro/cikk/category/hirek/"
+    # The category archives (https://foter.ro/cikk/category/NAME/) were renamed and restructured at the redesign (2026),
+    #  so the article feed of the portal is used instead (same as for szekelyhon)
+    "main-column":
+        "archive_url_format": "https://foter.ro/mod/open24h.php?p=#pagenum"
 
-    "velemeny":
-        "archive_url_format": "https://foter.ro/cikk/category/velemeny/"
-
-    "nagyitas":
-        "archive_url_format": "https://foter.ro/cikk/category/nagyitas/"
-
-    "romania":
-        "archive_url_format": "https://foter.ro/cikk/category/romania/"
-
-    "videok":
-        "archive_url_format": "https://foter.ro/cikk/category/videok/"
-
-    "fotre":
-        "archive_url_format": "https://foter.ro/cikk/category/fotre/"
-
-    "ajanlo":
-        "archive_url_format": "https://foter.ro/cikk/category/ajanlo/"
-
-    "terfigyelo":
-        "archive_url_format": "https://foter.ro/cikk/category/terfigyelo/"
-
-    "kepregeny":
-        "archive_url_format": "https://foter.ro/cikk/category/kepregeny/"
-
-    "holdbazis":
-        "archive_url_format": "https://foter.ro/cikk/category/holdbazis/"
-
-    "foci-eb-2021":
-        "archive_url_format": "https://foter.ro/cikk/category/foci-eb-2021/"
+        "initial_pagenum": 0
+        "min_pagenum": 1
 
 "portal_specific_exctractor_functions_file": "../extractors/site_specific_extractor_functions_htro.py"
-"extract_next_page_url_fun": "extract_next_page_url_foter"
+# "extract_next_page_url_fun": "extract_next_page_url_foter"
 "extract_article_urls_from_page_fun": "extract_article_urls_from_page_foter"
 
-"next_url_by_pagenum": false
-"infinite_scrolling": false
+"next_url_by_pagenum": true
+"infinite_scrolling": true
 "archive_page_urls_by_date": false
 "go_reverse_in_archive": false
 "verify_request": true

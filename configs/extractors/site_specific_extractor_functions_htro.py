@@ -203,8 +203,16 @@ def extract_article_urls_from_page_foter(archive_page_raw_html):
     :return: list that contains URLs
     """
     soup = BeautifulSoup(archive_page_raw_html, 'lxml')
-    main_container = soup.select('.entry-title')
-    urls = {link for link in safe_extract_hrefs_from_a_tags(main_container)}
+    # Current design (2026): the article feed (mod/open24h.php), same as szekelyhon and kronikaonline
+    urls = set()
+    for main_container in soup.find_all('div', class_='catinner'):
+        a_tag = main_container.find('a', recursive=False)
+        if a_tag is not None and 'href' in a_tag.attrs:
+            urls.add(a_tag['href'])
+    if len(urls) == 0:
+        # Old design (for archive pages cached before the redesign)
+        main_container = soup.select('.entry-title')
+        urls = {link for link in safe_extract_hrefs_from_a_tags(main_container)}
     return urls
 
 
