@@ -2,14 +2,19 @@
 
 "columns":
     "main-column":
-        "archive_url_format": "https://kronikaonline.ro/kereses?op=search&src_words=.&src_author=&src_search=KERES%C3%89S&page=1"
+        # The portal moved to kronika.ro (2026) and the search-based archive does not list anything anymore
+        # "archive_url_format": "https://kronikaonline.ro/kereses?op=search&src_words=.&src_author=&src_search=KERES%C3%89S&page=1"
+        "archive_url_format": "https://kronika.ro/mod/open24h.php?p=#pagenum"
+
+        "initial_pagenum": 0
+        "min_pagenum": 1
 
 "portal_specific_exctractor_functions_file": "../extractors/site_specific_extractor_functions_htro.py"
-"extract_next_page_url_fun": "extract_next_page_url_kronikaonline"
+# "extract_next_page_url_fun": "extract_next_page_url_kronikaonline"
 "extract_article_urls_from_page_fun": "extract_article_urls_from_page_kronikaonline"
 
-"next_url_by_pagenum": false
-"infinite_scrolling": false
+"next_url_by_pagenum": true
+"infinite_scrolling": true
 "archive_page_urls_by_date": false
 "go_reverse_in_archive": false
 "verify_request": true
