@@ -1,23 +1,14 @@
 "site_name": "alfahir"
 
+# The search-based archive (https://alfahir.hu/kereso?kereses=&from=YYYY-MM-DD&to=YYYY-MM-DD) is gone since the redesign,
+#  the paginated list of all articles is used instead (2026-10).
+# The portal answered 403 for some minutes after a quick burst of requests, so crawl it slowly
+#  (e.g. --max-no-of-calls-in-period 1 --limit-period 4)!
 "columns":
-    "main-column-from-2011-12-31-to-2012-02-29":
-        "archive_url_format": "https://alfahir.hu/kereso?kereses=&from=#year-#month-#day&to=#year-#month-#day"
+    "main-column":
+        "archive_url_format": "https://alfahir.hu/hirek/oldalak/#pagenum"
 
-        "date_first_article": 2011-12-31
-        "date_last_article": 2012-02-29
-
-    # This time period has few articles, so a monthly approach is used.
-    "main-column-from-2012-03-01-to-2012-07-01":
-        "archive_url_format": "https://alfahir.hu/kereso?kereses=&from=#year-#month-01&to=#next-year-#next-month-01"
-
-        "date_first_article": 2012-03-01
-        "date_last_article": 2012-06-30
-
-    "main-column-from-2012-07-02-to-now":
-        "archive_url_format": "https://alfahir.hu/kereso?kereses=&from=#year-#month-#day&to=#year-#month-#day"
-
-        "date_first_article": 2012-07-02
+        "initial_pagenum": 1
 
 "portal_specific_exctractor_functions_file": "../extractors/site_specific_extractor_functions_news_ngvmt.py"
 "extract_next_page_url_fun": "extract_next_page_url_alfahir"
@@ -26,7 +17,7 @@
 
 "next_url_by_pagenum": false
 "infinite_scrolling": false
-"archive_page_urls_by_date": true
+"archive_page_urls_by_date": false
 "go_reverse_in_archive": false
 "verify_request": true
 "ignore_archive_cache": false

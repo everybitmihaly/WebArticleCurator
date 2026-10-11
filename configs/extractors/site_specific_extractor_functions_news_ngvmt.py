@@ -33,6 +33,11 @@ def extract_next_page_url_alfahir(archive_page_raw_html):
     """
     ret = None
     soup = BeautifulSoup(archive_page_raw_html, 'lxml')
+    # Current design (2026): <link rel="next" href="/hirek/oldalak/3" type="text/html">
+    next_page = soup.find('link', rel='next', href=True)
+    if next_page is not None:
+        return f'https://alfahir.hu{next_page["href"]}'
+    # Old design (for archive pages cached before the redesign)
     next_page = soup.find('li', class_='pager__item pager__item--next')
     if next_page is not None:
         next_page_link = next_page.find('a')
