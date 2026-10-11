@@ -148,6 +148,21 @@ def extract_next_page_url_telex(archive_page_raw_html):
     return ret
 
 
+def extract_next_page_url_jogtar(archive_page_raw_html):
+    """
+        extracts and returns next page URL from an HTML code if there is one...
+        Specific for net.jogtar.hu
+        :returns string of url if there is one, None otherwise
+    """
+    ret = None
+    soup = BeautifulSoup(archive_page_raw_html, 'lxml')
+    # <a class="paginate-right" href="/jogszabaly-kereso?sorszam=&para=&tipus=&evszam=2011&pagenum=2">Előre</a>
+    next_page = soup.find('a', {'class': 'paginate-right', 'href': True})
+    if next_page is not None:
+        ret = urljoin('https://net.jogtar.hu', next_page['href'])
+    return ret
+
+
 def extract_next_page_url_test(filename, test_logger):
     """Quick test for extracting "next page" URLs when needed"""
     # This function is intended to be used from this file only as the import of WarcCachingDownloader is local to main()
@@ -415,6 +430,21 @@ def extract_article_urls_from_page_mosthallottam(archive_page_raw_html):
     if len(urls) == 0:
         # Old design (for archive pages cached before the redesign)
         urls = extract_article_urls_from_page_magyaridok(archive_page_raw_html)
+    return urls
+
+
+def extract_article_urls_from_page_jogtar(archive_page_raw_html):
+    """
+        extracts and returns as a list the URLs belonging to articles from an HTML code
+    :param archive_page_raw_html: archive page containing list of articles with their URLs
+    :return: list that contains URLs
+    """
+    soup = BeautifulSoup(archive_page_raw_html, 'lxml')
+    # <div class="custom-result-item-title"><a href="/jogszabaly?docid=A2600058.TV&celpara=&searchUrl=...">
+    main_container = soup.find_all('div', class_='custom-result-item-title')
+    # Keep only the document ID, the other parameters belong to the search
+    urls = {urljoin('https://net.jogtar.hu', link.split('&', maxsplit=1)[0])
+            for link in safe_extract_hrefs_from_a_tags(main_container)}
     return urls
 
 
