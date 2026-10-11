@@ -329,6 +329,9 @@ def extract_article_urls_from_page_p24_istentudja_roboraptor(archive_page_raw_ht
     soup = BeautifulSoup(archive_page_raw_html, 'lxml')
     main_container = soup.find_all(attrs={'class': 'm-entryPost__title'})
     urls = {link for link in safe_extract_hrefs_from_a_tags(main_container)}
+    if len(urls) == 0:
+        # Current design (2026): the same article widgets are used as on 24.hu (<article class="... -listPost ...">)
+        urls = extract_article_urls_from_page_p24(archive_page_raw_html)
     return urls
 
 
