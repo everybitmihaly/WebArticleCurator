@@ -2,6 +2,8 @@
 
 "columns":
     "main-column":
+        # The portal redirects these URLs to the new archive (https://www.origo.hu/hirarchivum/YYYY/MM/DD) since the redesign.
+        # WARNING: The new archive lists maximum 100 articles per day (2026-10), so busy days are not complete!
         "archive_url_format": "https://www.origo.hu/hir-archivum/#year/#year#month#day.html"
 
         "date_first_article": 1998-12-01

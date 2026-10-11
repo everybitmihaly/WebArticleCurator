@@ -235,11 +235,18 @@ def extract_article_urls_from_page_origo(archive_page_raw_html):
     :return: list that contains URLs
     """
     soup = BeautifulSoup(archive_page_raw_html, 'lxml')
-    main_container = soup.find_all(class_='archive-cikk')
     urls = set()
-    for link in safe_extract_hrefs_from_a_tags(main_container):
-        link = ORIGO_URL_CHANGES.get(link, link)
-        urls.add(link)
+    # Current design (2026): the old archive URLs are redirected to https://www.origo.hu/hirarchivum/YYYY/MM/DD
+    #  <div class="categorized-article-container"><article><a href="/COLUMN/YYYY/MM/SLUG">
+    for main_container in soup.find_all('div', class_='categorized-article-container'):
+        for link in safe_extract_hrefs_from_a_tags(main_container.find_all('article')):
+            urls.add(urljoin('https://www.origo.hu', link))
+    if len(urls) == 0:
+        # Old design (for archive pages cached before the redesign)
+        main_container = soup.find_all(class_='archive-cikk')
+        for link in safe_extract_hrefs_from_a_tags(main_container):
+            link = ORIGO_URL_CHANGES.get(link, link)
+            urls.add(link)
     return urls
 
 
