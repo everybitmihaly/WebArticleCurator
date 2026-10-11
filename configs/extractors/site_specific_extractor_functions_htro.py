@@ -54,7 +54,11 @@ def extract_next_page_url_maszol(archive_page_raw_html):
     """
     ret = None
     soup = BeautifulSoup(archive_page_raw_html, 'lxml')
-    next_page_url = soup.select_one('.page_next a')
+    # Current design (2026): <li class="page-next"><a class="page-link" rel="next" href=".../belfold/oldal/68">
+    next_page_url = soup.select_one('.page-next a')
+    if next_page_url is None:
+        # Old design (for archive pages cached before the redesign)
+        next_page_url = soup.select_one('.page_next a')
     if next_page_url is not None and 'href' in next_page_url.attrs:
         ret = next_page_url['href']
     return ret
