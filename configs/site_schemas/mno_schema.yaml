@@ -1,17 +1,11 @@
 "site_name": "mno"
 
 "columns":
-    "archivum":
-        "archive_url_format": "https://magyarnemzet.hu/archivum/page/#pagenum/"
-
-        # "date_first_article": 2009-01-21
-        # "date_last_article": 2100-01-01
-
-        "initial_pagenum": 0
-        # "min_pagenum": 1
-
+    # The columns moved to https://magyarnemzet.hu/rovat/NAME?page=N at the redesign (2026-10).
+    # The archive of all articles (https://magyarnemzet.hu/archivum/page/N/) has no successor: "friss-hirek" lists only
+    #  the recent articles, so only the columns can be crawled. (There are more columns, see the menu of the portal!)
     "a-helyzet":
-        "archive_url_format": "https://magyarnemzet.hu/ahelyzet/page/#pagenum/"
+        "archive_url_format": "https://magyarnemzet.hu/rovat/ahelyzet?page=#pagenum"
 
         # "date_first_article": 2009-01-21
         # "date_last_article": 2100-01-01
@@ -21,7 +15,7 @@
         # "max_pagenum": 20
 
     "belfold":
-        "archive_url_format": "https://magyarnemzet.hu/belfold/page/#pagenum/"
+        "archive_url_format": "https://magyarnemzet.hu/rovat/belfold?page=#pagenum"
 
         # "date_first_article": 2009-01-21
         # "date_last_article": 2100-01-01
@@ -31,7 +25,7 @@
         # "max_pagenum": 907
 
     "gazdasag":
-        "archive_url_format": "https://magyarnemzet.hu/gazdasag/page/#pagenum/"
+        "archive_url_format": "https://magyarnemzet.hu/rovat/gazdasag?page=#pagenum"
 
         # "date_first_article": 2009-01-21
         # "date_last_article": 2100-01-01
@@ -41,7 +35,7 @@
         # "max_pagenum": 501
 
     "kulfold":
-        "archive_url_format": "https://magyarnemzet.hu/kulfold/page/#pagenum/"
+        "archive_url_format": "https://magyarnemzet.hu/rovat/kulfold?page=#pagenum"
 
         # "date_first_article": 2009-01-21
         # "date_last_article": 2100-01-01
@@ -51,7 +45,7 @@
         # "max_pagenum": 888
 
     "kultura":
-        "archive_url_format": "https://magyarnemzet.hu/kultura/page/#pagenum/"
+        "archive_url_format": "https://magyarnemzet.hu/rovat/kultura?page=#pagenum"
 
         # "date_first_article": 2009-01-21
         # "date_last_article": 2100-01-01
@@ -61,7 +55,7 @@
         # "max_pagenum": 241
 
     "sport":
-        "archive_url_format": "https://magyarnemzet.hu/sport/page/#pagenum/"
+        "archive_url_format": "https://magyarnemzet.hu/rovat/sport?page=#pagenum"
 
         # "date_first_article": 2009-01-21
         # "date_last_article": 2100-01-01
@@ -71,7 +65,7 @@
         # "max_pagenum": 277
 
     "velemeny":
-        "archive_url_format": "https://magyarnemzet.hu/velemeny/page/#pagenum/"
+        "archive_url_format": "https://magyarnemzet.hu/rovat/velemeny?page=#pagenum"
 
         # "date_first_article": 2009-01-21
         # "date_last_article": 2100-01-01

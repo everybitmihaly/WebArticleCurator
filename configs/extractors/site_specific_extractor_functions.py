@@ -62,6 +62,13 @@ def extract_next_page_url_mno(archive_page_raw_html):
     """
     ret = None
     soup = BeautifulSoup(archive_page_raw_html, 'lxml')
+    # Current design (2026): <a class="button-arrow next" href="/rovat/belfold?page=3"> (no href on the last page)
+    next_page = soup.select_one('a.button-arrow.next')
+    if next_page is not None:
+        if 'href' in next_page.attrs:
+            ret = urljoin('https://magyarnemzet.hu', next_page['href'])
+        return ret
+    # Old design (for archive pages cached before the redesign)
     next_page = soup.find(class_='en-navigation-line-right-arrow')
     if next_page is not None and 'href' in next_page.attrs:
         ret = next_page['href']
@@ -365,8 +372,14 @@ def extract_article_urls_from_page_mno(archive_page_raw_html):
     :return: list that contains URLs
     """
     soup = BeautifulSoup(archive_page_raw_html, 'lxml')
-    main_container = soup.find_all('h2')
-    urls = {link for link in safe_extract_hrefs_from_a_tags(main_container)}
+    # Current design (2026): the list of the column (and its highlighted articles) without the boxes of the sidebar
+    #  <section class="category ..."> ... <a class="article-title-link" href="/COLUMN/YYYY/MM/SLUG">
+    urls = {urljoin('https://magyarnemzet.hu', a_tag['href'])
+            for a_tag in soup.select('section.category a.article-title-link[href]')}
+    if len(urls) == 0:
+        # Old design (for archive pages cached before the redesign)
+        main_container = soup.find_all('h2')
+        urls = {link for link in safe_extract_hrefs_from_a_tags(main_container)}
     return urls
 
 
