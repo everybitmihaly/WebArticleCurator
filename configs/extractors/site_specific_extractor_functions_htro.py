@@ -19,7 +19,11 @@ def extract_next_page_url_atlatszo_ro(archive_page_raw_html):
     """
     ret = None
     soup = BeautifulSoup(archive_page_raw_html, 'lxml')
-    next_page = soup.find(attrs={'class': 'next page-numbers'})
+    # Current design (2026): <a class="page_nav next" href="https://atlatszo.ro/page/2/?s">
+    next_page = soup.find('a', class_='page_nav next')
+    if next_page is None:
+        # Old design (for archive pages cached before the redesign)
+        next_page = soup.find(attrs={'class': 'next page-numbers'})
     if next_page is not None and 'href' in next_page.attrs:
         ret = next_page['href']
     return ret
@@ -191,7 +195,11 @@ def extract_article_urls_from_page_atlatszo_ro(archive_page_raw_html):
     :return: list that contains URLs
     """
     soup = BeautifulSoup(archive_page_raw_html, 'lxml')
-    main_container = soup.select('h4', class_='entry-title')
+    # Current design (2026): <h3 class="jeg_post_title archive-title"><a href="https://atlatszo.ro/COLUMN/SLUG/">
+    main_container = soup.find_all('h3', class_='jeg_post_title')
+    if len(main_container) == 0:
+        # Old design (for archive pages cached before the redesign)
+        main_container = soup.select('h4', class_='entry-title')
     urls = {link for link in safe_extract_hrefs_from_a_tags(main_container)}
     return urls
 
