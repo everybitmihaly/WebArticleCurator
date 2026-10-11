@@ -50,6 +50,11 @@ def extract_next_page_url_hvg(archive_page_raw_html):
     """
     ret = None
     soup = BeautifulSoup(archive_page_raw_html, 'lxml')
+    # Current design (2026): <a class="pagination__item pagination__control next" href="https://hvg.hu/itthon/2">
+    next_page = soup.select_one('a.pagination__control.next[href]')
+    if next_page is not None:
+        return next_page.attrs['href']
+    # Old design (for archive pages cached before the redesign)
     next_page = soup.find('a', class_='arrow next')
     if next_page is not None and next_page.attrs is not None:
         url_end = next_page.attrs['href'].replace('?ver=1', '')
@@ -291,6 +296,12 @@ def extract_article_urls_from_page_hvg(archive_page_raw_html):
     :return: list that contains URLs
     """
     soup = BeautifulSoup(archive_page_raw_html, 'lxml')
+    # Current design (2026): <h3 class="article-card__title"><a href="https://hvg.hu/COLUMN/YYYYMMDD_SLUG">
+    #  (the "nagyitas" column has zoom-card__title instead)
+    main_container = soup.find_all('h3', class_=['article-card__title', 'zoom-card__title'])
+    if len(main_container) > 0:
+        return {link for link in safe_extract_hrefs_from_a_tags(main_container)}
+    # Old design (for archive pages cached before the redesign)
     main_container = soup.find_all('h2', class_='heading-3')
     if len(main_container) == 0:  # The "nagyitas" column has a different structure
         main_container = soup.find_all('h1')
