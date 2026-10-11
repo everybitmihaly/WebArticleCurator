@@ -42,6 +42,9 @@ def extract_next_page_url_blikk(archive_page_raw_html):
     ret = None
     soup = BeautifulSoup(archive_page_raw_html, 'lxml')
     next_page = soup.find('section', class_='text-left')  # <section class="text-left pt-5 w-100 mb-5">
+    if next_page is None:
+        # Current design (2026): <section class="col-12 archive"> ... <a class="btn outline ml-4" href="/archivum/...">
+        next_page = soup.find('section', class_='archive')
     if next_page is not None:
         for a in next_page.find_all('a', {'href': True}):
             if 'Következő oldal' in a.text:
@@ -286,6 +289,11 @@ def extract_article_urls_from_page_blikk(archive_page_raw_html):
     """
     soup = BeautifulSoup(archive_page_raw_html, 'lxml')
     main_col = soup.find('ul', class_='newestArticles')
+    if main_col is None:
+        # Current design (2026): <section class="col-12 archive"><ul><li><a href="https://www.blikk.hu/COLUMN/SLUG/ID">
+        main_col = soup.find('section', class_='archive')
+        if main_col is None:
+            return set()
     main_container = main_col.find_all('li')
     urls = {link for link in safe_extract_hrefs_from_a_tags(main_container)}
     return urls
