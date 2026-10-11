@@ -96,10 +96,16 @@ def extract_article_urls_from_page_vadhajtasok(archive_page_raw_html):
     """
     urls = set()
     soup = BeautifulSoup(archive_page_raw_html, 'lxml')
+    # Old design (for archive pages cached before the redesign)
     container = soup.find('div', attrs={'id': 'primary'})
     if container is not None:
         main_container = container.find_all('h2', class_='cs-entry__title')
         urls = {link for link in safe_extract_hrefs_from_a_tags(main_container)}
+    else:
+        # Current design (2026): <h3 class="post-title text-left h6"><a href="https://www.vadhajtasok.hu/YYYY/MM/DD/SLUG">
+        #  The tag slider has the same headings with links to the tags (/cimke/NAME)
+        main_container = soup.find_all('h3', class_='post-title')
+        urls = {link for link in safe_extract_hrefs_from_a_tags(main_container) if '/cimke/' not in link}
     return urls
 
 
