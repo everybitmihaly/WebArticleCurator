@@ -270,10 +270,17 @@ def extract_article_urls_from_page_hang(archive_page_raw_html):
     """
     urls = set()
     soup = BeautifulSoup(archive_page_raw_html, 'lxml')
+    # Old design (for archive pages cached before the redesign)
     container = soup.find('div', attrs={'class': 'entry post-list col-12 col-md-7'})
     if container is not None:
         main_container = container.find_all('div', class_='entry-title')
         urls = {f'https://hang.hu{link}' for link in safe_extract_hrefs_from_a_tags(main_container)}
+    else:
+        # Current design (2026): <div class="col-lg-8 post-list ..."> ... <h3 class="card-title"><a href="/COLUMN/SLUG">
+        container = soup.find('div', class_='post-list')
+        if container is not None:
+            main_container = container.find_all('h3', class_='card-title')
+            urls = {f'https://hang.hu{link}' for link in safe_extract_hrefs_from_a_tags(main_container)}
     return urls
 
 

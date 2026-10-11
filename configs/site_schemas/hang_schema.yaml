@@ -5,43 +5,43 @@
 
 "columns":
     "belfold":
-        "archive_url_format": "https://hang.hu/belfold/?page=#pagenum"
+        "archive_url_format": "https://hang.hu/belfold?page=#pagenum"
 
         "initial_pagenum": 1
         "min_pagenum": 2
 
     "kulfold":
-        "archive_url_format": "https://hang.hu/kulfold/?page=#pagenum"
+        "archive_url_format": "https://hang.hu/kulfold?page=#pagenum"
 
         "initial_pagenum": 1
         "min_pagenum": 2
 
     "publicisztika":
-        "archive_url_format": "https://hang.hu/publicisztika/?page=#pagenum"
+        "archive_url_format": "https://hang.hu/publicisztika?page=#pagenum"
 
         "initial_pagenum": 1
         "min_pagenum": 2
 
     "gazdasag":
-        "archive_url_format": "https://hang.hu/gazdasag/?page=#pagenum"
+        "archive_url_format": "https://hang.hu/gazdasag?page=#pagenum"
 
         "initial_pagenum": 1
         "min_pagenum": 2
 
     "tudomany":
-        "archive_url_format": "https://hang.hu/tudomany/?page=#pagenum"
+        "archive_url_format": "https://hang.hu/tudomany?page=#pagenum"
 
         "initial_pagenum": 1
         "min_pagenum": 2
 
     "sport":
-        "archive_url_format": "https://hang.hu/sport/?page=#pagenum"
+        "archive_url_format": "https://hang.hu/sport?page=#pagenum"
 
         "initial_pagenum": 1
         "min_pagenum": 2
 
     "kultura":
-        "archive_url_format": "https://hang.hu/kultura/?page=#pagenum"
+        "archive_url_format": "https://hang.hu/kultura?page=#pagenum"
 
         "initial_pagenum": 1
         "min_pagenum": 2
