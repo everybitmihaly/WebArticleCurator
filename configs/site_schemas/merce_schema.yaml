@@ -10,6 +10,8 @@
         "archive_url_format": "https://balraat.merce.hu/#year/#month/"
 
         "date_first_article": 2018-11-25
+        # The blog is inactive since then (2026-10) and the months without articles answer 404
+        "date_last_article": 2022-04-30
 
     # All of the pogi's articles is in the general main-column archive.
     # "pogi":
