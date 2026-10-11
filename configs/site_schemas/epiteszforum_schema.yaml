@@ -1,5 +1,6 @@
 "site_name": "epiteszforum"
 
+# The portal answers 403 if there is no User-Agent header in the request (2026-10), so use --user-agent at crawling!
 "columns":
     "main-column":
         "archive_url_format": "https://epiteszforum.hu/archivum?search=&p=#pagenum"
