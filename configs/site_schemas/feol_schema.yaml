@@ -1,23 +1,24 @@
 "site_name": "feol"
 
+# The columns moved to https://www.feol.hu/rovat/NAME at the redesign (2026-10)
 "columns":
     "kozelet":
-        "archive_url_format": "https://www.feol.hu/kozelet/"
+        "archive_url_format": "https://www.feol.hu/rovat/kozelet"
 
     "sport":
-        "archive_url_format": "https://www.feol.hu/sport/"
+        "archive_url_format": "https://www.feol.hu/rovat/sport"
 
     "kek-hirek":
-        "archive_url_format": "https://www.feol.hu/kek-hirek/"
+        "archive_url_format": "https://www.feol.hu/rovat/kek-hirek"
 
     "orszag-vilag":
-        "archive_url_format": "https://www.feol.hu/orszag-vilag/"
+        "archive_url_format": "https://www.feol.hu/rovat/orszag-vilag"
 
     "kultura":
-        "archive_url_format": "https://www.feol.hu/kultura/"
+        "archive_url_format": "https://www.feol.hu/rovat/kultura"
 
     "gazdasag":
-        "archive_url_format": "https://www.feol.hu/gazdasag/"
+        "archive_url_format": "https://www.feol.hu/rovat/gazdasag"
 
 
 "portal_specific_exctractor_functions_file": "../extractors/site_specific_extractor_functions_news_pgvmt.py"

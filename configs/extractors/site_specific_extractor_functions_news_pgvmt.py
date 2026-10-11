@@ -3,6 +3,7 @@
 
 import json
 from itertools import chain
+from urllib.parse import urljoin
 from os.path import abspath, dirname, join as os_path_join
 
 from mplogger import Logger
@@ -37,6 +38,13 @@ def extract_next_page_url_feol(archive_page_raw_html):
     """
     ret = None
     soup = BeautifulSoup(archive_page_raw_html, 'lxml')
+    # Current design (2026): <a class="button-arrow next" href="/rovat/kozelet?page=3"> (no href on the last page)
+    next_page = soup.select_one('a.button-arrow.next')
+    if next_page is not None:
+        if 'href' in next_page.attrs:
+            ret = urljoin('https://www.feol.hu', next_page['href'])
+        return ret
+    # Old design (for archive pages cached before the redesign)
     next_page = soup.find('div', class_='enews-pagination-right')
     if next_page is not None:
         for next_page_url in next_page.find_all('a', recursive=False):
@@ -170,8 +178,14 @@ def extract_article_urls_from_page_feol(archive_page_raw_html):
     :return: list that contains URLs
     """
     soup = BeautifulSoup(archive_page_raw_html, 'lxml')
-    main_container = soup.find_all('div', class_='et_pb_column enews-tax-article')
-    urls = {link for link in safe_extract_hrefs_from_a_tags(main_container)}
+    # Current design (2026): the list of the column without the boxes of the sidebar
+    #  <div class="article-list"> ... <h2 class="article-data-title"><a class="article-link" href="/COLUMN/YYYY/MM/SLUG">
+    urls = {urljoin('https://www.feol.hu', a_tag['href'])
+            for a_tag in soup.select('div.article-list h2.article-data-title a.article-link[href]')}
+    if len(urls) == 0:
+        # Old design (for archive pages cached before the redesign)
+        main_container = soup.find_all('div', class_='et_pb_column enews-tax-article')
+        urls = {link for link in safe_extract_hrefs_from_a_tags(main_container)}
     return urls
 
 
