@@ -430,8 +430,13 @@ def extract_article_urls_from_page_telex(archive_page_raw_html):
     :return: list that contains URLs
     """
     soup = BeautifulSoup(archive_page_raw_html, 'lxml')
-    main_container = soup.find_all('div', class_='listing_child')
-    urls = {f'https://telex.hu{link}' for link in safe_extract_hrefs_from_a_tags(main_container)}
+    # Current design (2026): <a class="list__item__title" href="/belfold/2026/10/11/slug">
+    urls = {urljoin('https://telex.hu', a_tag['href'])
+            for a_tag in soup.find_all('a', {'class': 'list__item__title', 'href': True})}
+    if len(urls) == 0:
+        # Old design (for archive pages cached before the redesign)
+        main_container = soup.find_all('div', class_='listing_child')
+        urls = {f'https://telex.hu{link}' for link in safe_extract_hrefs_from_a_tags(main_container)}
     return urls
 
 
