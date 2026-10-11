@@ -1,31 +1,32 @@
 "site_name": "p24_roboraptor"
 
+# The portal left 24.hu and moved to www.roboraptor.hu, the columns are at /category/NAME/ there (2026-10)
 "columns":
     "film":
-        "archive_url_format": "https://roboraptor.24.hu/film/"
+        "archive_url_format": "https://www.roboraptor.hu/category/film/"
 
     "sorozat":
-        "archive_url_format": "https://roboraptor.24.hu/sorozat/"
+        "archive_url_format": "https://www.roboraptor.hu/category/sorozat/"
 
     "konyv":
-        "archive_url_format": "https://roboraptor.24.hu/konyv/"
+        "archive_url_format": "https://www.roboraptor.hu/category/konyv/"
 
     "podcast":
-        "archive_url_format": "https://roboraptor.24.hu/tag/podcast/"
+        "archive_url_format": "https://www.roboraptor.hu/tag/podcast/"
 
     "game":
-        "archive_url_format": "https://roboraptor.24.hu/game/"
+        "archive_url_format": "https://www.roboraptor.hu/category/game/"
 
     "kepregeny":
-        "archive_url_format": "https://roboraptor.24.hu/kepregeny/"
+        "archive_url_format": "https://www.roboraptor.hu/category/kepregeny/"
 
     "magazin":
-        "archive_url_format": "https://roboraptor.24.hu/magazin/"
+        "archive_url_format": "https://www.roboraptor.hu/category/magazin/"
 
 
 "portal_specific_exctractor_functions_file": "../extractors/site_specific_extractor_functions_news_ngvmt.py"
-"extract_next_page_url_fun": "extract_next_page_url_p24"
-"extract_article_urls_from_page_fun": "extract_article_urls_from_page_p24_istentudja_roboraptor"
+"extract_next_page_url_fun": "extract_next_page_url_roboraptor"
+"extract_article_urls_from_page_fun": "extract_article_urls_from_page_roboraptor"
 
 "next_url_by_pagenum": false
 "infinite_scrolling": false

@@ -42,6 +42,24 @@ def extract_next_page_url_alfahir(archive_page_raw_html):
     return ret
 
 
+def extract_next_page_url_roboraptor(archive_page_raw_html):
+    """
+        extracts and returns next page URL from an HTML code if there is one...
+        Specific for roboraptor.hu (it was roboraptor.24.hu before)
+        :returns string of url if there is one, None otherwise
+    """
+    ret = None
+    soup = BeautifulSoup(archive_page_raw_html, 'lxml')
+    # <link rel="next" href="https://www.roboraptor.hu/category/film/page/2/">
+    next_page = soup.find('link', rel='next', href=True)
+    if next_page is not None:
+        ret = next_page['href']
+    else:
+        # Old design on roboraptor.24.hu (for archive pages cached before the portal has moved)
+        ret = extract_next_page_url_p24(archive_page_raw_html)
+    return ret
+
+
 def extract_next_page_url_hvg(archive_page_raw_html):
     """
         extracts and returns next page URL from an HTML code if there is one...
@@ -332,6 +350,24 @@ def extract_article_urls_from_page_p24_istentudja_roboraptor(archive_page_raw_ht
     if len(urls) == 0:
         # Current design (2026): the same article widgets are used as on 24.hu (<article class="... -listPost ...">)
         urls = extract_article_urls_from_page_p24(archive_page_raw_html)
+    return urls
+
+
+def extract_article_urls_from_page_roboraptor(archive_page_raw_html):
+    """
+        extracts and returns as a list the URLs belonging to articles from an HTML code
+    :param archive_page_raw_html: archive page containing list of articles with their URLs
+    :return: list that contains URLs
+    """
+    soup = BeautifulSoup(archive_page_raw_html, 'lxml')
+    # Current site (www.roboraptor.hu): <main class="site-main"> ... <h3 class="entry-title"><a href=".../YYYY/MM/DD/SLUG/">
+    main_col = soup.find('main', class_='site-main')
+    if main_col is not None:
+        main_container = main_col.find_all('h3', class_='entry-title')
+        urls = {link for link in safe_extract_hrefs_from_a_tags(main_container)}
+    else:
+        # Old design on roboraptor.24.hu (for archive pages cached before the portal has moved)
+        urls = extract_article_urls_from_page_p24_istentudja_roboraptor(archive_page_raw_html)
     return urls
 
 
