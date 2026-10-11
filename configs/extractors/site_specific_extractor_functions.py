@@ -334,7 +334,15 @@ def extract_article_urls_from_page_index(archive_page_raw_html):
         if article.find('a', {'href': 'mindekozben/'}) is not None or article.find('span',
                                                                                    {'class': 'pp-poszt'}) is None:
             main_container.append(article)
-    all_url = {link for link in safe_extract_hrefs_from_a_tags(main_container)}
+    all_url = set()
+    for article in main_container:
+        # Current design of the velvet.hu archive (2026): the first link of the cards is the (relative) link of the tag
+        #  <article class="24ora-item card-deck"> ... <h3 class="card-title"><a class="card-link pseudo-link" href="...">
+        a_tag = article.select_one('h3.card-title a.card-link[href]')
+        if a_tag is None:
+            a_tag = article.find('a', {'href': True})
+        if a_tag is not None:
+            all_url.add(a_tag['href'])
 
     urls = set()
     for url in all_url:
