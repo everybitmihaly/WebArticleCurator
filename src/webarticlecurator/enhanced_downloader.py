@@ -319,8 +319,10 @@ class WarcDownloader:
         except AttributeError:  # On Windows there is no getpeername() Attribute of the class...
             try:
                 peer_name = resp.raw._connection.sock.socket.getpeername()[0]
-            except AttributeError:
+            except (AttributeError, OSError):
                 peer_name = 'None'  # Socket closed and could not determine peername...
+        except OSError:  # The server has already closed the connection (e.g. Errno 107: Transport endpoint is not connected)
+            peer_name = 'None'
         return peer_name
 
     def _dummy_download_url(self, *_, **__):
