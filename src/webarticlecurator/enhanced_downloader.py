@@ -18,7 +18,8 @@ from requests import Session
 from requests.exceptions import RequestException
 
 from urllib3 import disable_warnings
-from urllib3.exceptions import ProtocolError, InsecureRequestWarning, LocationParseError
+from urllib3.exceptions import ProtocolError, InsecureRequestWarning, LocationParseError, \
+    TimeoutError as Urllib3TimeoutError
 
 from chardet import detect
 from ratelimit import limits, sleep_and_retry
@@ -218,13 +219,15 @@ class WarcDownloader:
     def __init__(self, expected_filename, _logger, warcinfo_record_data=None, program_name='WebArticleCurator',
                  user_agent=None, overwrite_warc=True, err_threshold=10, known_bad_urls=None,
                  max_no_of_calls_in_period=2, limit_period=1, proxy_url=None, allow_cookies=False, verify_request=True,
-                 stay_offline=False, max_retries=3):
+                 stay_offline=False, max_retries=3, timeout=(30, 120)):
         # Store variables
         self._logger = _logger
         self._req_headers = {'Accept-Encoding': 'identity', 'User-agent': user_agent}
         self._error_count = 0
         self._error_threshold = err_threshold  # Set the error threshold which cause aborting to prevent ban
         self._max_retries = max_retries
+        # (connect, read) timeout in seconds: without it a stalled connection blocks the crawl forever
+        self._timeout = timeout
 
         # Setup download function
         if not stay_offline:
@@ -348,7 +351,7 @@ class WarcDownloader:
         for i in range(1, self._max_retries+1):
             try:  # The actual request (on the reparsed URL, everything else is made on the original URL)
                 resp = self._requests_get(url_reparsed, headers=self._req_headers, stream=True,
-                                          verify=self._verify_request)
+                                          verify=self._verify_request, timeout=self._timeout)
             except RequestException as err:
                 self._handle_request_exception(url, f'RequestException happened during downloading: {err}')
                 resp = None  # Retry if there is retries left...
@@ -390,7 +393,7 @@ class WarcDownloader:
 
         try:
             data = resp.raw.read()  # To be able to return decoded and also write warc
-        except ProtocolError as err:
+        except (ProtocolError, Urllib3TimeoutError) as err:  # The read timeout also applies to the streamed body
             self._handle_request_exception(url, f'RequestException happened during downloading: {err} \n\n'
                                                 f' The program ignores it and jumps to the next one.')
             return None
